@@ -9,7 +9,7 @@ const configRoutes = (router) => {
     })
 
     router.get('/test', loginMiddware, async (req, res) => {
-        res.status(200).send({message: 'oi'})
+        res.status(200).send({message: 'opa'})
     })
 }
 
