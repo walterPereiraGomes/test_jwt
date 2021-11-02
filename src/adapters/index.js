@@ -1,10 +1,18 @@
-var express = require("express");
+var express = require("express")
+const userRoutes = require('./users')
 const app = express();
-const usersAdapter = require('./users')
+const router = express.Router()
 
+const start = (connection) => {
+    app.use(express.json());
+    userRoutes(router, connection);
+    app.use(router);
+    
+    app.listen(8081, () => {
+        console.log('server is running!');
+    })
 
-app.use(usersAdapter);
+}
 
-app.listen(8081, () => {
-    console.log('server is running!');
-})
+module.exports = start;
+

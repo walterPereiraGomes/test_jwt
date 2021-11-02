@@ -1,16 +1,16 @@
-var express = require('express');
-var usersAdapter = express.Router();
-const Mysql = require('../db/Mysql')
+const userController = require('../controllers/users')
+const loginMiddware = require('../middleware/login') 
 
-const connection = new Mysql();
+const configRoutes = (router) => {
 
-usersAdapter.get('/welcome', (req, res) => {
-    res.send('welcome to my app!');
-})
+    router.post('/login', async (req, res, next) => {
+        const {status, body} = await userController.login({login: req.body.login, password: req.body.password})
+        res.status(status).send(body)
+    })
 
-usersAdapter.get('/users', async (req, res) => {
-    const users = await connection._users.findAll({ raw: true})
-    res.send(users)
-})
+    router.get('/test', loginMiddware, async (req, res) => {
+        res.status(200).send({message: 'oi'})
+    })
+}
 
-module.exports = usersAdapter;
+module.exports = configRoutes;
